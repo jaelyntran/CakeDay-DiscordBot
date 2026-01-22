@@ -6,7 +6,7 @@ import { Client, Collection, GatewayIntentBits } from 'discord.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
-const client = new Client({
+const discordClient = new Client({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
@@ -14,9 +14,7 @@ const client = new Client({
     ]
 });
 
-client.commands = new Collection();
-client.autoSummaryChannels = {};
-client.messageBuffer = {};
+discordClient.commands = new Collection();
 
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(f => f.endsWith('.js'));
@@ -27,7 +25,7 @@ for (const file of commandFiles) {
     const commandModule = await import(`file://${filePath}`);
     const command = commandModule.default || commandModule;
     if (command.data && command.execute) {
-        client.commands.set(command.data.name, command);
+        discordClient.commands.set(command.data.name, command);
     } else {
         console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
     }
@@ -43,10 +41,10 @@ for (const file of eventFiles) {
   const event = eventModule.default || eventModule;
 
   if (event.once) {
-    client.once(event.name, (...args) => event.execute(...args, client));
+    discordClient.once(event.name, (...args) => event.execute(...args, discordClient));
   } else {
-    client.on(event.name, (...args) => event.execute(...args, client));
+    discordClient.on(event.name, (...args) => event.execute(...args, discordClient));
   }
 }
 
-client.login(process.env.DISCORD_TOKEN);
+discordClient.login(process.env.DISCORD_TOKEN);
