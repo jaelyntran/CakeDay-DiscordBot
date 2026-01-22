@@ -4,9 +4,9 @@ import mongoose from 'mongoose';
 mongoose.connect(process.env.MONGO_URI);
 
 const userSchema = new mongoose.Schema({
-    userId: { type: String, require: true, unique: true },
-    serverId: { type: String, require: true }
-    birthday: { type: Date }
+    userId: { type: String, required: true, unique: true },
+    serverId: { type: String, required: true },
+    birthday: { type: Date, default: null }
 });
 
-module.exports = mongoose.model('User', userSchema);
+export default mongoose.model('User', userSchema);
