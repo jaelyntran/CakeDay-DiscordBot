@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Client, Collection, GatewayIntentBits } from 'discord.js';
+import { MongoClient, ServerApiVersion } from "mongodb";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
@@ -46,5 +47,24 @@ for (const file of eventFiles) {
     discordClient.on(event.name, (...args) => event.execute(...args, discordClient));
   }
 }
+
+const mongoClient = new MongoClient(process.env.MONGO_URI, {
+    serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+    }
+});
+
+async function run () {
+    try {
+        await mongoClient.connect();
+        await mongoClient.db("monshoo").command({ ping: 1 });
+        console.log("Successfully connected to MongoDB!");
+    } catch {
+        console.error("MongoDB ping failed:", err);
+    }
+}
+run();
 
 discordClient.login(process.env.DISCORD_TOKEN);
