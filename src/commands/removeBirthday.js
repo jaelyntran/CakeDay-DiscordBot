@@ -21,7 +21,7 @@ export default {
             const result = await deleteBirthday(user.id, interaction.guild.id);
             if(user.id == interaction.user.id) {
                 return interaction.editReply(`✔️ Your birthday has been removed!`);
-            } elsr {
+            } else {
                 return interaction.editReply(`✔️ User **${user.tag}**'s birthday has been removed!`);
             }
         } catch (error) {

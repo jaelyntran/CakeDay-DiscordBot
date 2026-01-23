@@ -24,12 +24,14 @@ export default {
                 if (!result) {
                     return interaction.editReply(`😔 No birthday data exists for you.`);
                 }
-                return interaction.editReply(`🎂 Your birthday is **${result}**.`);
+                const bdayStr = `${String(result.getMonth()+1).padStart(2,'0')}-${String(result.getDate()).padStart(2,'0')}-${result.getFullYear()}`;
+                return interaction.editReply(`🎂 Your birthday is **${bdayStr}**.`);
             } else {
                 if (!result) {
                     return interaction.editReply(`😔 No birthday data exists for **${user.tag}**.`);
                 }
-                return interaction.editReply(`🎂 User **${user.tag}**'s birthday is **${result}**.`);
+                const bdayStr = `${String(result.getMonth()+1).padStart(2,'0')}-${String(result.getDate()).padStart(2,'0')}-${result.getFullYear()}`;
+                return interaction.editReply(`🎂 User **${user.tag}**'s birthday is **${bdayStr}**.`);
             }
         } catch (error) {
             console.error(error);

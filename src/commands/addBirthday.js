@@ -7,7 +7,7 @@ export default {
         .setDescription(`Add new user birthday to this server`)
         .addStringOption(option =>
             option.setName('birthday')
-                  .setDescription('Birthday in MM-DD format (e.g., 08-15)')
+                  .setDescription('Birthday in MM-DD-YYYY format (e.g., 08-15-1999)')
                   .setRequired(true)
         )
         .addUserOption(option =>
@@ -24,15 +24,18 @@ export default {
             const bday = interaction.options.getString('birthday').trim();
             const user = interaction.options.getUser('target') || interaction.user;
 
-            if(!/^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(bday)) {
-                return interaction.editReply('Invalid format. Please use MM-DD (e.g., 08-15).');
+            const [month, day, year] = bday.trim().split('-').map(Number);
+            const date = new Date(year, month - 1, day);
+            if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
+                return interaction.editReply('Invalid date. Please enter a real date in MM-DD-YYYY format (e.g., 08-15-1999).');
             }
-            const result = await setBirthday(user.id, interaction.guild.id, bday);
+            const result = await setBirthday(user.id, interaction.guild.id, date);
+            const bdayStr = `${String(result.getMonth()+1).padStart(2,'0')}-${String(result.getDate()).padStart(2,'0')}-${result.getFullYear()}`;
 
             if(user.id == interaction.user.id) {
-                return interaction.editReply(`🎉 Your birthday has been set to **${result.birthday}**.`);
+                return interaction.editReply(`🎉 Your birthday has been set to **${bdayStr}**.`);
             } else {
-                return interaction.editReply(`🎉 User **${user.tag}**'s birthday has been set to **${result.birthday}**.`);
+                return interaction.editReply(`🎉 User **${user.tag}**'s birthday has been set to **${bdayStr}**.`);
             }
         } catch (error) {
             console.error(error);
