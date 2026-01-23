@@ -1,6 +1,6 @@
+import 'dotenv/config';
 import { SlashCommandBuilder } from 'discord.js';
 import { deleteServerDocuments } from '../db/userUtils.js';
-import 'dotenv/config';
 
 export default {
     data: new SlashCommandBuilder()
@@ -8,6 +8,17 @@ export default {
         .setDescription(`Remove all users' documents in the server database`),
 
     async execute(interaction) {
+        const allowedRoles = process.env.ALLOWED_ROLES.split(',').map(id => id.trim());;
+        const memberRoleIds = interaction.member.roles.cache.map(role => role.id);
+        const hasPermission = memberRoleIds.some(id => allowedRoles.includes(id));
+
+        if (!hasPermission) {
+            return interaction.reply({
+                content: '❌ You do not have permission to run this command.',
+                ephemeral: true
+            });
+        }
+
         console.log('Remove all users');
         await interaction.deferReply({ ephemeral: true });
 
@@ -17,11 +28,6 @@ export default {
                 return interaction.editReply(`❌ No document to remove.`);
             } else {
                 return interaction.editReply(`✔️ Removed ${result.deletedCount} documents!`);
-            }
-
-            const modLogChannel = interaction.guild.channels.cache.get(process.env.MOD_LOG_CHANNEL_ID);
-            if (modLogChannel) {
-                modLogChannel.send(`[CakeDay] User **${interaction.user.tag}** remove all user documents for this server.`);
             }
         } catch (error) {
             console.error(error);

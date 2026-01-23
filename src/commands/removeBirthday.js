@@ -1,6 +1,6 @@
+import 'dotenv/config';
 import { SlashCommandBuilder } from 'discord.js';
 import { deleteBirthday } from '../db/userUtils.js';
-import 'dotenv/config';
 
 export default {
     data: new SlashCommandBuilder()
@@ -13,6 +13,17 @@ export default {
         ),
 
     async execute(interaction) {
+        const allowedRoles = process.env.ALLOWED_ROLES.split(',').map(id => id.trim());;
+        const memberRoleIds = interaction.member.roles.cache.map(role => role.id);
+        const hasPermission = memberRoleIds.some(id => allowedRoles.includes(id));
+
+        if (!hasPermission) {
+            return interaction.reply({
+                content: '❌ You do not have permission to run this command.',
+                ephemeral: true
+            });
+        }
+
         console.log('Remove birthday');
         await interaction.deferReply({ ephemeral: true });
 
@@ -24,11 +35,6 @@ export default {
                 return interaction.editReply(`✔️ Your birthday has been removed!`);
             } else {
                 return interaction.editReply(`✔️ User **${user.tag}**'s birthday has been removed!`);
-            }
-
-            const modLogChannel = interaction.guild.channels.cache.get(process.env.MOD_LOG_CHANNEL_ID);
-            if (modLogChannel) {
-                modLogChannel.send(`[CakeDay] User **${interaction.user.tag}** remove **${user.tag}**'s birthday.`);
             }
         } catch (error) {
             console.error(error);

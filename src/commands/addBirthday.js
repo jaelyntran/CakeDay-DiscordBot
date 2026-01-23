@@ -1,6 +1,6 @@
+import 'dotenv/config';
 import { SlashCommandBuilder } from 'discord.js';
 import { setBirthday } from '../db/userUtils.js';
-import 'dotenv/config';
 
 export default {
     data: new SlashCommandBuilder()
@@ -18,13 +18,23 @@ export default {
         ),
 
     async execute(interaction) {
+        const allowedRoles = process.env.ALLOWED_ROLES.split(',').map(id => id.trim());;
+        const memberRoleIds = interaction.member.roles.cache.map(role => role.id);
+        const hasPermission = memberRoleIds.some(id => allowedRoles.includes(id));
+
+        if (!hasPermission) {
+            return interaction.reply({
+                content: '❌ You do not have permission to run this command.',
+                ephemeral: true
+            });
+        }
+
         console.log('Add birthday');
         await interaction.deferReply({ ephemeral: true });
 
         try {
             const bday = interaction.options.getString('birthday').trim();
             const user = interaction.options.getUser('target') || interaction.user;
-
             const [month, day, year] = bday.trim().split('-').map(Number);
             const date = new Date(year, month - 1, day);
             if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
@@ -39,11 +49,6 @@ export default {
                 return interaction.editReply(`🎉 Your birthday has been set to **${bdayStr}**.`);
             } else {
                 return interaction.editReply(`🎉 User **${user.tag}**'s birthday has been set to **${bdayStr}**.`);
-            }
-
-            const modLogChannel = interaction.guild.channels.cache.get(process.env.MOD_LOG_CHANNEL_ID);
-            if (modLogChannel) {
-                modLogChannel.send(`[CakeDay] User **${interaction.user.tag}** set **${user.tag}**'s birthday to **${bdayStr}**.`);
             }
         } catch (error) {
             console.error(error);
