@@ -8,7 +8,7 @@ export default {
 
     async execute(interaction) {
         console.log('List all birthday');
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply();
 
         try {
             const users = await getAllUsers(interaction.guild.id);
