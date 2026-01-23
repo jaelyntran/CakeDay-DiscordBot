@@ -30,4 +30,9 @@ async function deleteBirthday(userId, serverId) {
     return user;
 }
 
-export {getOrCreateUser, getBirthday, setBirthday, deleteBirthday};
+async function deleteDocument(userId, serverId) {
+    const user = await User.findOneAndDelete({ userId, serverId });
+    return user;
+}
+
+export {getOrCreateUser, getBirthday, setBirthday, deleteBirthday, deleteDocument};
