@@ -43,5 +43,7 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
         console.log(`Successfully reloaded ${commands.length} global commands.`);
     } catch (err) {
         console.error(err);
+    } finally {
+        process.exit(0);
     }
 })();
