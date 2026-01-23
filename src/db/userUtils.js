@@ -10,8 +10,8 @@ async function getOrCreateUser(userId, serverId) {
 };
 
 async function getBirthday(userId, serverId) {
-    const user = await getOrCreateUser(userId, serverId);
-    return user.birthday;
+    const user = await User.findOne({ userId, serverId });
+    return user || null;
 }
 
 async function setBirthday(userId, serverId, birthday) {

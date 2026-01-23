@@ -17,20 +17,22 @@ export default {
 
         try {
             const user = interaction.options.getUser('target') || interaction.user;
-
             const result = await getBirthday(user.id, interaction.guild.id);
 
-            if(user.id == interaction.user.id) {
-                if (!result) {
+            if (!result || !result.birthday) {
+                if(user.id === interaction.user.id) {
                     return interaction.editReply(`😔 No birthday data exists for you.`);
-                }
-                const bdayStr = `${String(result.getMonth()+1).padStart(2,'0')}-${String(result.getDate()).padStart(2,'0')}-${result.getFullYear()}`;
-                return interaction.editReply(`🎂 Your birthday is **${bdayStr}**.`);
-            } else {
-                if (!result) {
+                } else {
                     return interaction.editReply(`😔 No birthday data exists for **${user.tag}**.`);
                 }
-                const bdayStr = `${String(result.getMonth()+1).padStart(2,'0')}-${String(result.getDate()).padStart(2,'0')}-${result.getFullYear()}`;
+            }
+
+            const bday = result.birthday;
+            const bdayStr = `${String(bday.getMonth()+1).padStart(2,'0')}-${String(bday.getDate()).padStart(2,'0')}-${bday.getFullYear()}`;
+
+            if(user.id === interaction.user.id) {
+                return interaction.editReply(`🎂 Your birthday is **${bdayStr}**.`);
+            } else {
                 return interaction.editReply(`🎂 User **${user.tag}**'s birthday is **${bdayStr}**.`);
             }
         } catch (error) {

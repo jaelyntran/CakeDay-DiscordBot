@@ -30,7 +30,9 @@ export default {
                 return interaction.editReply('Invalid date. Please enter a real date in MM-DD-YYYY format (e.g., 08-15-1999).');
             }
             const result = await setBirthday(user.id, interaction.guild.id, date);
-            const bdayStr = `${String(result.getMonth()+1).padStart(2,'0')}-${String(result.getDate()).padStart(2,'0')}-${result.getFullYear()}`;
+            const bdayStr = `${String(result.birthday.getMonth()+1).padStart(2,'0')}`
+                          + `-${String(result.birthday.getDate()).padStart(2,'0')}`
+                          + `-${result.birthday.getFullYear()}`;
 
             if(user.id == interaction.user.id) {
                 return interaction.editReply(`🎉 Your birthday has been set to **${bdayStr}**.`);
