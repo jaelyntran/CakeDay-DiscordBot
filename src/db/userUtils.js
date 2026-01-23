@@ -62,3 +62,8 @@ export async function deleteDocument(userId, serverId) {
     const user = await User.findOneAndDelete({ userId, serverId });
     return user;
 }
+
+export async function deleteServerDocuments(serverId) {
+    const result = await User.deleteMany({ serverId });
+    return result;
+}

@@ -15,7 +15,7 @@ export default {
             if(!users || users.length === 0) {
                 return interaction.editReply(`😔 No information found for this server`);
             }
-            let reply = `🔖 Here's the list of all recorded birthdays: `;
+            let reply = `🔖 Here's the list of all recorded birthdays:\n`;
             for(const user of users) {
                 let userTag;
                 try {
