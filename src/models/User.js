@@ -8,5 +8,5 @@ const userSchema = new mongoose.Schema({
     serverId: { type: String, required: true },
     birthday: { type: Date, default: null },
 });
-
+userSchema.index({ userId: 1, serverId: 1 }, { unique: true });
 export default mongoose.model('User', userSchema);
