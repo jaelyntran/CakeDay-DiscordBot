@@ -13,7 +13,7 @@ export default {
 
     async execute(interaction) {
         console.log('Check birthday');
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply();
 
         try {
             const user = interaction.options.getUser('target') || interaction.user;
@@ -28,7 +28,7 @@ export default {
             }
 
             const bday = result.birthday;
-            const bdayStr = `${String(bday.getMonth()+1).padStart(2,'0')}-${String(bday.getDate()).padStart(2,'0')}-${bday.getFullYear()}`;
+            const bdayStr = `${String(bday.getMonth()+1).padStart(2,'0')}-${String(bday.getDate()).padStart(2,'0')}`;
 
             if(user.id === interaction.user.id) {
                 return interaction.editReply(`🎂 Your birthday is **${bdayStr}**.`);

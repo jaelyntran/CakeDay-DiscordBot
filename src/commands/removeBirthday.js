@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { deleteBirthday } from '../db/userUtils.js';
+import 'dotenv/config';
 
 export default {
     data: new SlashCommandBuilder()
@@ -23,6 +24,11 @@ export default {
                 return interaction.editReply(`✔️ Your birthday has been removed!`);
             } else {
                 return interaction.editReply(`✔️ User **${user.tag}**'s birthday has been removed!`);
+            }
+
+            const modLogChannel = interaction.guild.channels.cache.get(process.env.MOD_LOG_CHANNEL_ID);
+            if (modLogChannel) {
+                modLogChannel.send(`[CakeDay] User **${interaction.user.tag}** remove **${user.tag}**'s birthday.`);
             }
         } catch (error) {
             console.error(error);

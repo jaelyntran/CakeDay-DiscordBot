@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { deleteServerDocuments } from '../db/userUtils.js';
+import 'dotenv/config';
 
 export default {
     data: new SlashCommandBuilder()
@@ -16,6 +17,11 @@ export default {
                 return interaction.editReply(`❌ No document to remove.`);
             } else {
                 return interaction.editReply(`✔️ Removed ${result.deletedCount} documents!`);
+            }
+
+            const modLogChannel = interaction.guild.channels.cache.get(process.env.MOD_LOG_CHANNEL_ID);
+            if (modLogChannel) {
+                modLogChannel.send(`[CakeDay] User **${interaction.user.tag}** remove all user documents for this server.`);
             }
         } catch (error) {
             console.error(error);

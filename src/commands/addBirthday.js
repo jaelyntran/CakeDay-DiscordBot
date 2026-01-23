@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { setBirthday } from '../db/userUtils.js';
+import 'dotenv/config';
 
 export default {
     data: new SlashCommandBuilder()
@@ -38,6 +39,11 @@ export default {
                 return interaction.editReply(`🎉 Your birthday has been set to **${bdayStr}**.`);
             } else {
                 return interaction.editReply(`🎉 User **${user.tag}**'s birthday has been set to **${bdayStr}**.`);
+            }
+
+            const modLogChannel = interaction.guild.channels.cache.get(process.env.MOD_LOG_CHANNEL_ID);
+            if (modLogChannel) {
+                modLogChannel.send(`[CakeDay] User **${interaction.user.tag}** set **${user.tag}**'s birthday to **${bdayStr}**.`);
             }
         } catch (error) {
             console.error(error);
