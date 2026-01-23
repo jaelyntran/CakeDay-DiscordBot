@@ -12,8 +12,8 @@ export default {
 
         try {
             const users = await getAllUsers(interaction.guild.id);
-            if(!users || || users.length === 0) {
-                return interaction.editReply(`No information found for this server.`);
+            if(!users || users.length === 0) {
+                return interaction.editReply(`😔 No information found for this server`);
             }
             let reply = `🔖 Here's the list of all recorded birthdays: `;
             for(const user of users) {
@@ -27,7 +27,8 @@ export default {
 
                 if (user.birthday) {
                     const bday = new Date(user.birthday);
-                    const bdayStr = `${String(bday.getMonth()+1).padStart(2,'0')}-${String(bday.getDate()).padStart(2,'0')}-${bday.getFullYear()}`;
+                    //const bdayStr = `${String(bday.getMonth()+1).padStart(2,'0')}-${String(bday.getDate()).padStart(2,'0')}-${bday.getFullYear()}`;
+                    const bdayStr = `${String(bday.getMonth()+1).padStart(2,'0')}-${String(bday.getDate()).padStart(2,'0')}`;
                     reply += `\n⭐ **${userTag}**'s birthday: **${bdayStr}**`;
                 } else {
                     reply += `\n⭐ **${userTag}** has no birthday set`;

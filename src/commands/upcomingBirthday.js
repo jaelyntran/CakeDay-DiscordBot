@@ -25,7 +25,7 @@ export default {
                         userTag = `(Inactive) ${user.userId}`;
                     }
                     const bday = new Date(cur.nextBirthday);
-                    const bdayStr = `${String(bday.getMonth()+1).padStart(2,'0')}-${String(bday.getDate()).padStart(2,'0')}-${bday.getFullYear()}`;
+                    const bdayStr = `${String(bday.getMonth()+1).padStart(2,'0')}-${String(bday.getDate()).padStart(2,'0')}`;
 
                     reply += `\n📅 **${userTag}** on ${bdayStr}`;
                 }
