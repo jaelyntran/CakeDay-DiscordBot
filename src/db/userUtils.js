@@ -1,6 +1,6 @@
 import User from '../models/User.js';
 
-async function getOrCreateUser(userId, serverId) {
+export async function getOrCreateUser(userId, serverId) {
     let user = await User.findOne({userId, serverId});
     if(!user) {
         user = new User({userId, serverId});
@@ -9,24 +9,24 @@ async function getOrCreateUser(userId, serverId) {
     return user;
 };
 
-async function getBirthday(userId, serverId) {
+export async function getBirthday(userId, serverId) {
     const user = await User.findOne({ userId, serverId });
     return user || null;
 }
 
-async function setBirthday(userId, serverId, birthday) {
+export async function setBirthday(userId, serverId, birthday) {
     const user = await getOrCreateUser(userId, serverId);
     user.birthday = birthday;
     await user.save();
     return user;
 }
 
-async function getAllUsers(serverId) {
+export async function getAllUsers(serverId) {
     const users = await User.find({serverId});
     return users;
 }
 
-async function getNextBirthday(serverId) {
+export async function getNextBirthday(serverId) {
     const today = new Date();
     const users = await User.find({serverId, birthday: { $ne: null }});
 
@@ -49,7 +49,7 @@ async function getNextBirthday(serverId) {
     return upcoming;
 }
 
-async function deleteBirthday(userId, serverId) {
+export async function deleteBirthday(userId, serverId) {
     const user = await getOrCreateUser(userId, serverId);
     if(user.birthday) {
         user.birthday = null;
@@ -58,9 +58,7 @@ async function deleteBirthday(userId, serverId) {
     return user;
 }
 
-async function deleteDocument(userId, serverId) {
+export async function deleteDocument(userId, serverId) {
     const user = await User.findOneAndDelete({ userId, serverId });
     return user;
 }
-
-export {getOrCreateUser, getBirthday, setBirthday, getAllUsers, getNextBirthday, deleteBirthday, deleteDocument};

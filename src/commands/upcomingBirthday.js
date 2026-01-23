@@ -3,11 +3,11 @@ import { getNextBirthday } from '../db/userUtils.js';
 
 export default {
     data: new SlashCommandBuilder()
-        .setName('nextbirthday')
+        .setName('upcomingbirthday')
         .setDescription(`Show the server's upcoming birthday'`),
 
     async execute(interaction) {
-        console.log('Display next birthday');
+        console.log('Display upcoming birthday');
         await interaction.deferReply();
 
         try {

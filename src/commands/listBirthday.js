@@ -12,7 +12,7 @@ export default {
 
         try {
             const users = await getAllUsers(interaction.guild.id);
-            if(!users) {
+            if(!users || || users.length === 0) {
                 return interaction.editReply(`No information found for this server.`);
             }
             let reply = `🔖 Here's the list of all recorded birthdays: `;

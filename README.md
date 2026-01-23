@@ -8,15 +8,19 @@ This project contains a birthday management Discord app written in JavaScript.
 
 
 ## Commands Reference
-/add bday → add a user’s birthday
+/addbirthday → add a user’s birthday
 
-/remove bday → remove a user’s birthday
+/checkbirthday → check a user’s birthday
 
-/check bday → check a user’s birthday
+/listbirthday → list all birthdays
 
-/list bday → list all birthdays
+/removebirthday → remove a user’s birthday
 
-/next bday → show the next upcoming birthday
+/removeuser → remove a user’s document from the database
+
+/removeallusers → remove all users' documents from the database for the current server
+
+/upcomingbirthday → show the next upcoming birthday
 
 ## Features
 
