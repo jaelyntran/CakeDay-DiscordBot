@@ -5,3 +5,5 @@ export default {
     once: false,
     async execute(guild, client) {
         console.log(`✅ Joined new server: ${guild.name} (${guild.id})`);
+    }
+};

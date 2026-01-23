@@ -26,6 +26,29 @@ async function getAllUsers(serverId) {
     return users;
 }
 
+async function getNextBirthday(serverId) {
+    const today = new Date();
+    const users = await User.find({serverId, birthday: { $ne: null }});
+
+    if (users.length === 0) return null;
+
+    const nextBirthdays = users.map(user => {
+        const birth = user.birthday;
+        let next = new Date(today.getFullYear(), birth.getMonth(), birth.getDate());
+
+        if(next < today) {
+            next.setFullYear(next.getFullYear() + 1);
+        }
+
+        return { user, nextBirthday: next };
+    });
+
+    nextBirthdays.sort((a, b) => a.nextBirthday - b.nextBirthday);
+    const earliestDate = nextBirthdays[0].nextBirthday;
+    const upcoming = nextBirthdays.filter(user => user.nextBirthday.getTime() === earliestDate.getTime());
+    return upcoming;
+}
+
 async function deleteBirthday(userId, serverId) {
     const user = await getOrCreateUser(userId, serverId);
     if(user.birthday) {
@@ -40,4 +63,4 @@ async function deleteDocument(userId, serverId) {
     return user;
 }
 
-export {getOrCreateUser, getBirthday, setBirthday, getAllUsers, deleteBirthday, deleteDocument};
+export {getOrCreateUser, getBirthday, setBirthday, getAllUsers, getNextBirthday, deleteBirthday, deleteDocument};

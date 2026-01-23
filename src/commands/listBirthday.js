@@ -4,7 +4,7 @@ import { getAllUsers } from '../db/userUtils.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('listbirthday')
-        .setDescription(`List all users and their birthdays in this server`);
+        .setDescription(`List all users and their birthdays in this server`),
 
     async execute(interaction) {
         console.log('List all birthday');
@@ -15,7 +15,7 @@ export default {
             if(!users) {
                 return interaction.editReply(`No information found for this server.`);
             }
-            let reply = `🎉 Here's the list of all recorded birthdays: `;
+            let reply = `🔖 Here's the list of all recorded birthdays: `;
             for(const user of users) {
                 let userTag;
                 try {
@@ -28,9 +28,9 @@ export default {
                 if (user.birthday) {
                     const bday = new Date(user.birthday);
                     const bdayStr = `${String(bday.getMonth()+1).padStart(2,'0')}-${String(bday.getDate()).padStart(2,'0')}-${bday.getFullYear()}`;
-                    reply += `\n🎂 **${userTag}**'s birthday: **${bdayStr}**`;
+                    reply += `\n⭐ **${userTag}**'s birthday: **${bdayStr}**`;
                 } else {
-                    reply += `\n🎂 **${userTag}** has no birthday set`;
+                    reply += `\n⭐ **${userTag}** has no birthday set`;
                 }
             }
             interaction.editReply(reply);
