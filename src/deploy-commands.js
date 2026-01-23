@@ -27,7 +27,6 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
 	try {
-        console.log(`Started refreshing ${commands.length} application (/) commands.`);
         if (process.env.GUILD_ID) {
             await rest.put(
                 Routes.applicationGuildCommands(process.env.APP_ID, process.env.GUILD_ID),
