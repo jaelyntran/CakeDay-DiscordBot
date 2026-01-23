@@ -21,7 +21,7 @@ export default {
         await interaction.deferReply({ ephemeral: true });
 
         try {
-            const bday = interaction.options.getString('birthday');
+            const bday = interaction.options.getString('birthday').trim();
             const user = interaction.options.getUser('target') || interaction.user;
 
             if(!/^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(bday)) {
@@ -32,11 +32,11 @@ export default {
             if(user.id == interaction.user.id) {
                 return interaction.editReply(`🎉 Your birthday has been set to **${result.birthday}**.`);
             } else {
-                return interaction.editReply(`🎉 User **${user.id}** birthday has been set to **${result.birthday}**.`);
+                return interaction.editReply(`🎉 User **${user.tag}**'s birthday has been set to **${result.birthday}**.`);
             }
         } catch (error) {
             console.error(error);
-            return interaction.editReply('Something went wrong while saving the birthday.');
+            return interaction.editReply('❌ Something went wrong while saving the birthday.');
         }
     }
 };
