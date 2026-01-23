@@ -15,7 +15,7 @@ export default {
            if (!users) {
             return interaction.editReply(`No information found for this server.`);
            } else {
-                let reply = `⏳ Here's the upcoming birthday(s): \n`;
+                let reply = `⏳ Here's the upcoming birthday(s):`;
                 for(const cur of users) {
                     let userTag;
                     try {

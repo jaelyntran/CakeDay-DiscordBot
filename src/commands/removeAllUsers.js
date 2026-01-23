@@ -13,9 +13,9 @@ export default {
         try {
             const result = await deleteServerDocuments(interaction.guild.id);
             if(result === 0) {
-                return interaction.editReply(`❌ No document to remove`);
+                return interaction.editReply(`❌ No document to remove.`);
             } else {
-                return interaction.editReply(`✔️ Removed ${result.deletedCount} documents`);
+                return interaction.editReply(`✔️ Removed ${result.deletedCount} documents!`);
             }
         } catch (error) {
             console.error(error);
