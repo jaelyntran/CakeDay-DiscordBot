@@ -4,7 +4,7 @@ import { setBirthday } from '../db/userUtils.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('addbirthday')
-        .setDescription('Add new user birthday to this server')
+        .setDescription(`Add new user birthday to this server`)
         .addStringOption(option =>
             option.setName('birthday')
                   .setDescription('Birthday in MM-DD format (e.g., 08-15)')

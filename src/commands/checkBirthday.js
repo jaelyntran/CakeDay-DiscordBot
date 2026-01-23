@@ -4,7 +4,7 @@ import { getBirthday } from '../db/userUtils.js';
 export default {
     data: new SlashCommandBuilder()
         .setName('checkbirthday')
-        .setDescription('Check a user's birthday in this server')
+        .setDescription(`Check a user's birthday in this server`)
         .addUserOption(option =>
             option.setName('target')
                   .setDescription('The user to check the birthday for')
