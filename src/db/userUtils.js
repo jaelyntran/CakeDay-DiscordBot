@@ -21,6 +21,11 @@ async function setBirthday(userId, serverId, birthday) {
     return user;
 }
 
+async function getAllUsers(serverId) {
+    const users = await User.find({serverId});
+    return users;
+}
+
 async function deleteBirthday(userId, serverId) {
     const user = await getOrCreateUser(userId, serverId);
     if(user.birthday) {
@@ -35,4 +40,4 @@ async function deleteDocument(userId, serverId) {
     return user;
 }
 
-export {getOrCreateUser, getBirthday, setBirthday, deleteBirthday, deleteDocument};
+export {getOrCreateUser, getBirthday, setBirthday, getAllUsers, deleteBirthday, deleteDocument};
