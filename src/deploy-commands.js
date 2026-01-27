@@ -34,6 +34,12 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
             );
             console.log(`Successfully reloaded ${commands.length} guild commands.`);
         }
+
+        await rest.put(
+            Routes.applicationCommands(process.env.APP_ID),
+            { body: commands }
+        );
+        console.log(`Successfully reloaded ${commands.length} global commands.`);
     } catch (err) {
         console.error(err);
     } finally {
