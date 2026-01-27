@@ -7,7 +7,6 @@ export function startBirthdayJob(client) {
 }
 
 async function runBirthdayCheck(client) {
-    console.log(`Running birthday job for guild: ${guild.id}`);
     const today = new Date();
     const todayStr = today.toISOString().slice(0, 10);
 
@@ -17,7 +16,7 @@ async function runBirthdayCheck(client) {
             if (!server) {
                 server = await Server.create({serverId: guild.id});
             }
-
+            console.log(`Running birthday job for guild: ${guild.id}`);
             console.log(server.lastBirthdayAnnouncement);
             if (server.lastBirthdayAnnouncement === todayStr) continue;
 
