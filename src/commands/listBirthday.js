@@ -23,7 +23,6 @@ export default {
             if(!users || users.length === 0) {
                 return interaction.editReply(`😔 No information found for this server`);
             }
-            let reply = `🔖 Here's the list of all recorded birthdays: \n`;
 
             for (const user of users) {
                 if (!user.birthday) continue;
@@ -35,6 +34,12 @@ export default {
                 monthBuckets[month].push({ userId: user.userId, day});
             }
 
+            const hasBirthdays = monthBuckets.some(bucket => bucket.length > 0);
+            if (!hasBirthdays) {
+                return interaction.editReply(`😔 No birthdays are set for this server`);
+            }
+
+            let reply = `🔖 Here's the list of all recorded birthdays: \n`;
             for (let i = 0; i < 12; i++) {
                 const bucket = monthBuckets[i];
                 if (bucket.length === 0) continue;
