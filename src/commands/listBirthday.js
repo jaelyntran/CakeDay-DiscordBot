@@ -44,6 +44,7 @@ export default {
                 const bucket = monthBuckets[i];
                 if (bucket.length === 0) continue;
 
+                bucket.sort((a, b) => a.day - b.day);
                 reply += `\n**${MONTHS[i]}**\n`;
 
                 for (const entry of bucket) {
