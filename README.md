@@ -41,7 +41,7 @@ ALLOWED_ROLES=roleID1,roleID2  # Comma-separated role IDs allowed to add/remove 
 
 7. Run the Bot ```node src/app.js```
 
-8. Optional Maintenance Commands:
+8. (Optional) Maintenance commands:
 - To clear all slash commands, run ```node src/clear-commands.js```
 - To drop database, run ```node src/db/dropDatabase.js```
 
@@ -54,12 +54,19 @@ ALLOWED_ROLES=roleID1,roleID2  # Comma-separated role IDs allowed to add/remove 
 
 ## Commands Reference
 /addbirthday → add a user’s birthday (only ALLOWED_ROLES)
+
 /checkbirthday → check a user’s birthday 
+
 /listbirthday → list all birthdays
+
 /removebirthday → remove a user’s birthday (only ALLOWED_ROLES)
+
 /removeuser → remove a user’s document from the database (only ALLOWED_ROLES)
+
 /removeallusers → remove all users' documents from the database for the current server (only ALLOWED_ROLES)
+
 /upcomingbirthday → show the next upcoming birthday
+
 **Birthday Announcements:** CakeDay automatically posts birthday announcements daily in the server’s **system channel**, or if none exists, the **first available text channel** where it has permission to send messages.
 
 
