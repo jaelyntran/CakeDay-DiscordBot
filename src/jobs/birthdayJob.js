@@ -7,6 +7,7 @@ export function startBirthdayJob(client) {
 }
 
 async function runBirthdayCheck(client) {
+    console.log(`Running birthday job for guild: ${guild.id}`);
     const today = new Date();
     const todayStr = today.toISOString().slice(0, 10);
 
@@ -17,6 +18,7 @@ async function runBirthdayCheck(client) {
                 server = await Server.create({serverId: guild.id});
             }
 
+            console.log(server.lastBirthdayAnnouncement);
             if (server.lastBirthdayAnnouncement === todayStr) continue;
 
             const users = await User.find({serverId: guild.id, birthday: { $ne: null }});
@@ -26,6 +28,7 @@ async function runBirthdayCheck(client) {
                     birthday.getMonth() === today.getMonth() &&
                     birthday.getDate() === today.getDate()
                 );
+                console.log("Checking user:", user.userId, "birthday:", birthday, "today:", today);
             });
 
             if (birthdayUsers.length === 0) continue;
@@ -37,7 +40,7 @@ async function runBirthdayCheck(client) {
                         .sort((a, b) => a.position - b.position);
                     if (textChannels.size === 0) continue;
                     channel = textChannels.first();
-            };
+            }
 
             const mentions = [];
             for (const user of birthdayUsers) {
@@ -49,6 +52,7 @@ async function runBirthdayCheck(client) {
 
             if (mentions.length === 0) continue;
 
+            console.log(`Channel to send announcement: ${channel?.name}`);
             await channel.send(
                 `🎉 **Happy Birthday!!!** 🎂 ${mentions.join(' ')}`
             );
