@@ -11,6 +11,7 @@ You can invite the hosted version of this bot directly to your server.
    
 3. Once invited, you can start using the bot's commands in any text channel.
 
+
 ## Self-Host the Bot
 
 If you want to run your own copy of the bot:
@@ -44,45 +45,51 @@ ALLOWED_ROLES=roleID1,roleID2  # Comma-separated role IDs allowed to add/remove 
 To clear all slash commands, run ```node src/clear-commands.js```
 To drop database, run ```node src/db/dropDatabase.js```
 
-## Commands Reference
-/addbirthday → add a user’s birthday
 
-/checkbirthday → check a user’s birthday
+## Notes
+
+- All birthday data is stored in MongoDB.
+
+- Global commands may take up to an hour to appear on all servers.
+
+- Only users with roles specified in ALLOWED_ROLES can modify birthday data.
+
+- The bot will not respond in DMs; it only works in servers.
+
+
+## Commands Reference
+/addbirthday → add a user’s birthday (only ALLOWED_ROLES)
+
+/checkbirthday → check a user’s birthday 
 
 /listbirthday → list all birthdays
 
-/removebirthday → remove a user’s birthday
+/removebirthday → remove a user’s birthday (only ALLOWED_ROLES)
 
-/removeuser → remove a user’s document from the database
+/removeuser → remove a user’s document from the database (only ALLOWED_ROLES)
 
-/removeallusers → remove all users' documents from the database for the current server
+/removeallusers → remove all users' documents from the database for the current server (only ALLOWED_ROLES)
 
 /upcomingbirthday → show the next upcoming birthday
 
 **Birthday Announcements:** CakeDay automatically posts birthday announcements daily in the server’s **system channel**, or if none exists, the **first available text channel** where it has permission to send messages.
 
+
 ## Permissions Required
 
-Send Messages – To post birthday announcements.
+- Send Messages – To post birthday announcements.
 
-View Channels - Required so the bot can see channels to send announcements.
-
-## Notes
-
-All birthday data is stored in MongoDB.
-
-Only users with roles specified in ALLOWED_ROLES can modify birthdays.
-
-The bot will not respond in DMs; it only works in servers.
-
-## Features
+- View Channels - Required so the bot can see channels to send announcements.
 
 
 ## Known Issues / Limitations
+...
 
 
 ## Takeaway
+...
 
 
 ## Credits / Acknowledgements
 - discord.js → Discord bot library
+...
