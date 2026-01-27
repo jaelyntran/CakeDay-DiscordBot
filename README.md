@@ -1,11 +1,48 @@
 # CakeDay-DiscordBot
-This project contains a birthday management Discord app written in JavaScript.
+CakeDay is a Discord bot that helps you track and celebrate birthdays in your server. It supports adding, listing, and announcing birthdays automatically. Written in JavaScript with MongoDB integration, currently hosted on Railway. 
+
 
 ## Inviting the Bot to the Server (No Setup Required)
+You can invite the hosted version of this bot directly to your server.
 
+1. Click the invite link: [Invite CakeDay](https://discord.com/oauth2/authorize?client_id=1464000903555190967)
+
+2. Select the server you want to add the bot to.
+   
+3. Once invited, you can start using the bot's commands in any text channel.
 
 ## Self-Host the Bot
 
+If you want to run your own copy of the bot:
+
+1. Clone the repository ```git clone https://github.com/jaelyntran/CakeDay-DiscordBot```
+   
+2. After cloning, navigate to the new directory ```cd CakeDay-DiscordBot```
+
+3. Check if node exists by running ```node -v```. If not installed:
+- Download Node.js from nodejs.org (LTS version recommended).
+- Follow the installer instructions (npm is bundled with Node.js).
+
+4. Install all required packages listed in the package.json file ```npm install```
+   
+5. Set up environment variables
+Create a .env file in the project root with the following:
+```env
+APP_ID=your-app-id           # Discord application ID
+GUILD_ID=your-guild-id       # Optional: for testing in one server
+DISCORD_TOKEN=your-bot-token
+PUBLIC_KEY=your-public-key   # For verifying interactions
+MONGO_URI=your-mongodb-connection-string
+ALLOWED_ROLES=roleID1,roleID2  # Comma-separated role IDs allowed to add/remove birthdays
+```
+
+6. Deploy slash commands ```node src/deploy-commands.js```
+
+7. Run the Bot ```node src/app.js```
+
+8. Optional Maintenance Commands:
+To clear all slash commands, run ```node src/clear-commands.js```
+To drop database, run ```node src/db/dropDatabase.js```
 
 ## Commands Reference
 /addbirthday → add a user’s birthday
@@ -21,6 +58,22 @@ This project contains a birthday management Discord app written in JavaScript.
 /removeallusers → remove all users' documents from the database for the current server
 
 /upcomingbirthday → show the next upcoming birthday
+
+**Birthday Announcements:** CakeDay automatically posts birthday announcements daily in the server’s **system channel**, or if none exists, the **first available text channel** where it has permission to send messages.
+
+## Permissions Required
+
+Send Messages – To post birthday announcements.
+
+View Channels - Required so the bot can see channels to send announcements.
+
+## Notes
+
+All birthday data is stored in MongoDB.
+
+Only users with roles specified in ALLOWED_ROLES can modify birthdays.
+
+The bot will not respond in DMs; it only works in servers.
 
 ## Features
 
