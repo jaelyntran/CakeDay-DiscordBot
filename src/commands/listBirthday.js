@@ -10,31 +10,51 @@ export default {
         console.log('List all birthday');
         await interaction.deferReply();
 
+        const MONTHS = [
+          'January', 'February', 'March', 'April',
+          'May', 'June', 'July', 'August',
+          'September', 'October', 'November', 'December'
+        ];
+        const monthBuckets = Array.from({ length: 12 }, () => []);
+
+
         try {
             const users = await getAllUsers(interaction.guild.id);
             if(!users || users.length === 0) {
                 return interaction.editReply(`😔 No information found for this server`);
             }
-            let reply = `🔖 Here's the list of all recorded birthdays:`;
-            for(const user of users) {
-                let userTag;
-                try {
-                    const member = await interaction.guild.members.fetch(user.userId);
-                    userTag = member.user.tag;
-                } catch {
-                    userTag = `(Inactive) ${user.userId}`;
-                }
+            let reply = `🔖 Here's the list of all recorded birthdays: \n`;
 
-                if (user.birthday) {
-                    const bday = new Date(user.birthday);
-                    //const bdayStr = `${String(bday.getMonth()+1).padStart(2,'0')}-${String(bday.getDate()).padStart(2,'0')}-${bday.getFullYear()}`;
-                    const bdayStr = `${String(bday.getMonth()+1).padStart(2,'0')}-${String(bday.getDate()).padStart(2,'0')}`;
-                    reply += `\n⭐ **${userTag}**'s birthday: **${bdayStr}**`;
-                } else {
-                    reply += `\n⭐ **${userTag}** has no birthday set`;
-                }
+            for (const user of users) {
+                if (!user.birthday) continue;
+
+                const date = new Date(user.birthday);
+                const month = date.getMonth(); // 0–11
+                const day = date.getDate();
+
+                monthBuckets[month].push({ userId: user.userId, day});
             }
-            interaction.editReply(reply);
+
+            for (let i = 0; i < 12; i++) {
+                const bucket = monthBuckets[i];
+                if (bucket.length === 0) continue;
+
+                reply += `\n**${MONTHS[i]}**\n`;
+
+                for (const entry of bucket) {
+                    let userTag;
+                    try {
+                        const member = await interaction.guild.members.fetch(entry.userId);
+                        userTag = member.user.username;
+                    } catch {
+                        userTag = `(Inactive) ${entry.userId}`;
+                    }
+
+                reply += `• ${userTag} — ${MONTHS[i].slice(0, 3)} ${entry.day}\n`;
+              }
+            }
+
+            await interaction.editReply(reply);
         } catch (error) {
             console.error(error);
             return interaction.editReply('❌ Something went wrong while fetching the list of birthdays.');

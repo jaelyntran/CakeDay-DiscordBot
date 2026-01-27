@@ -1,4 +1,5 @@
 import { Events } from 'discord.js';
+import { startBirthdayJob } from '../jobs/birthdayJob.js';
 
 export default {
 	name: Events.ClientReady,
