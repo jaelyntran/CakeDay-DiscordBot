@@ -23,11 +23,11 @@ async function runBirthdayCheck(client) {
             const users = await User.find({serverId: guild.id, birthday: { $ne: null }});
             const birthdayUsers = users.filter(user => {
                 const birthday = new Date(user.birthday);
+                console.log("Checking user:", user.userId, "birthday:", birthday, "today:", today);
                 return (
                     birthday.getMonth() === today.getMonth() &&
                     birthday.getDate() === today.getDate()
                 );
-                console.log("Checking user:", user.userId, "birthday:", birthday, "today:", today);
             });
 
             if (birthdayUsers.length === 0) continue;
@@ -35,11 +35,16 @@ async function runBirthdayCheck(client) {
             let channel = guild.systemChannel;
             if (!channel) {
                 const textChannels = guild.channels.cache
-                        .filter(c => c.isTextBased() && c.permissionsFor(client.user)?.has('SendMessages'))
-                        .sort((a, b) => a.position - b.position);
-                    if (textChannels.size === 0) continue;
-                    channel = textChannels.first();
+                        .filter(c => c.isTextBased() && c.permissionsFor(client.user)?.has('SendMessages'));
+
+                if (textChannels.size === 0) {
+                    console.log(`No writable text channels in guild ${guild.id}`);
+                    continue; // skip this guild
+                }
+
+                channel = textChannels.sort((a, b) => a.position - b.position).first();
             }
+            console.log(`Channel to send announcement: ${channel?.name}`);
 
             const mentions = [];
             for (const user of birthdayUsers) {
