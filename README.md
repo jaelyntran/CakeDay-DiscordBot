@@ -91,6 +91,7 @@ CakeDay was built to make birthday tracking in Discord servers simple and automa
 - Permission-based authorization using Discord’s native server permissions
 - Background task logic for scheduled announcements
 - Deployment and environment management using Railway
+
 The project is designed to be easy to self-host, extend, and customize for different server needs.
 
 
