@@ -1,9 +1,8 @@
 # CakeDay-DiscordBot
-CakeDay is a Discord bot that helps you track and celebrate birthdays in your server. It supports adding, listing, and announcing birthdays automatically. Written in JavaScript with MongoDB integration, currently hosted on Railway. Public hosting is currently limited; full functionality is available when self-hosting.
+CakeDay is a Discord bot that helps you track and celebrate birthdays in your server. It supports adding, listing, and announcing birthdays automatically. Written in JavaScript with MongoDB integration, currently hosted on Railway. 
 
 
 ## Inviting the Bot to the Server 
-⚠️ Note: Birthday management commands are restricted by server role configuration. If you invite the hosted bot and need role access enabled, please contact the maintainer.
 You can invite the hosted version of this bot directly to your server.
 
 1. Click the invite link: [Invite CakeDay](https://discord.com/oauth2/authorize?client_id=1464000903555190967)
@@ -12,6 +11,9 @@ You can invite the hosted version of this bot directly to your server.
    
 3. Once invited, you can start using the bot's commands in any text channel.
 
+* Permissions
+- Users with Manage Server or Administrator permissions can add, remove, and manage birthdays.
+- All other users can view birthday information.
 
 ## Self-Host the Bot
 
@@ -35,7 +37,6 @@ GUILD_ID=your-guild-id       # Optional: for testing in one server
 DISCORD_TOKEN=your-bot-token
 PUBLIC_KEY=your-public-key   # For verifying interactions
 MONGO_URI=your-mongodb-connection-string
-ALLOWED_ROLES=roleID1,roleID2  # Comma-separated role IDs allowed to add/remove birthdays
 ```
 
 6. Deploy slash commands ```node src/deploy-commands.js```
@@ -46,28 +47,28 @@ ALLOWED_ROLES=roleID1,roleID2  # Comma-separated role IDs allowed to add/remove 
 - To clear all slash commands, run ```node src/clear-commands.js```
 - To drop database, run ```node src/db/dropDatabase.js```
 
+
 ## Notes
 - All birthday data is stored in MongoDB.
-- Global commands may take up to an hour to appear on all servers.
-- Only users with roles specified in ALLOWED_ROLES can modify birthday data.
-- The bot will not respond in DMs; it only works in servers.
-- The bot currently supports one birthday per user per server.
+- Global slash commands may take up to an hour to appear on all servers.
+- The bot only works in servers; it does not respond in DMs.
+- Each user can have only one birthday per server.
 
 
 ## Commands Reference
-/addbirthday → add a user’s birthday (only ALLOWED_ROLES)
+/addbirthday → Add a user’s birthday (requires Manage Server/Admin)
 
-/checkbirthday → check a user’s birthday 
+/checkbirthday → Check a user’s birthday 
 
-/listbirthday → list all birthdays
+/listbirthday → List all birthdays
 
-/removebirthday → remove a user’s birthday (only ALLOWED_ROLES)
+/removebirthday → Remove a user’s birthday (requires Manage Server/Admin)
 
-/removeuser → remove a user’s document from the database (only ALLOWED_ROLES)
+/removeuser → Remove a user’s document from the database (requires Manage Server/Admin)
 
-/removeallusers → remove all users' documents from the database for the current server (only ALLOWED_ROLES)
+/removeallusers → Remove all users' documents for the current server (requires Manage Server/Admin)
 
-/upcomingbirthday → show the next upcoming birthday
+/upcomingbirthday → Show the next upcoming birthday
 
 **Birthday Announcements:** CakeDay automatically posts birthday announcements daily in the server’s **system channel**, or if none exists, the **first available text channel** where it has permission to send messages.
 
@@ -78,17 +79,16 @@ ALLOWED_ROLES=roleID1,roleID2  # Comma-separated role IDs allowed to add/remove 
 
 
 ## Known Issues / Limitations
-- If the bot is restarted or redeployed, birthday announcements may be delayed until the next scheduled check.
-- Server timezone handling is based on the system default and may not reflect individual user timezones.
-- The bot must have permission to send messages in at least one text channel to post birthday announcements.
-- The hosted instance may be unavailable during maintenance or redeployments.
+- Birthday announcements may be delayed after bot restarts or redeploys.
+- Server timezone handling is based on system default and may not reflect individual user timezones.
+- The hosted instance may be temporarily unavailable during maintenance or redeployments.
 
 
 ## Takeaway
 CakeDay was built to make birthday tracking in Discord servers simple and automated. It demonstrates:
 - Practical use of Discord slash commands
 - MongoDB schema design for per-server user data
-- Role-based access control using Discord role ID
+- Permission-based authorization using Discord’s native server permissions
 - Background task logic for scheduled announcements
 - Deployment and environment management using Railway
 The project is designed to be easy to self-host, extend, and customize for different server needs.
