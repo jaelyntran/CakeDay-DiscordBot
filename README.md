@@ -50,6 +50,7 @@ ALLOWED_ROLES=roleID1,roleID2  # Comma-separated role IDs allowed to add/remove 
 - Global commands may take up to an hour to appear on all servers.
 - Only users with roles specified in ALLOWED_ROLES can modify birthday data.
 - The bot will not respond in DMs; it only works in servers.
+- The bot currently supports one birthday per user per server.
 
 
 ## Commands Reference
@@ -76,13 +77,29 @@ ALLOWED_ROLES=roleID1,roleID2  # Comma-separated role IDs allowed to add/remove 
 
 
 ## Known Issues / Limitations
-...
+- If the bot is restarted or redeployed, birthday announcements may be delayed until the next scheduled check.
+- Server timezone handling is based on the system default and may not reflect individual user timezones.
+- The bot must have permission to send messages in at least one text channel to post birthday announcements.
+- The hosted instance may be unavailable during maintenance or redeployments.
 
 
 ## Takeaway
-...
+CakeDay was built to make birthday tracking in Discord servers simple and automated. It demonstrates:
+- Practical use of Discord slash commands
+- MongoDB schema design for per-server user data
+- Role-based access control using Discord role ID
+- Background task logic for scheduled announcements
+- Deployment and environment management using Railway
+The project is designed to be easy to self-host, extend, and customize for different server needs.
 
 
 ## Credits / Acknowledgements
 - discord.js → Discord bot library
-...
+  https://discord.js.org/
+- MongoDB & Mongoose — Database and object modeling
+  https://www.mongodb.com/
+  https://mongoosejs.com/
+- Railway — Hosting and deployment platform
+  https://railway.app/
+- Node.js — JavaScript runtime
+  https://nodejs.org/
