@@ -1,4 +1,5 @@
 import User from '../models/User.js';
+import { PermissionsBitField } from 'discord.js';
 
 export async function getOrCreateUser(userId, serverId) {
     let user = await User.findOne({userId, serverId});
@@ -67,3 +68,15 @@ export async function deleteServerDocuments(serverId) {
     const result = await User.deleteMany({ serverId });
     return result;
 }
+
+export function requirePermission(interaction) {
+    if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageGuild)
+        && !interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+        return interaction.reply({
+            content: '❌ You must have **Manage Server** or **Administrator** permission to use this command.',
+            ephemeral: true,
+        });
+    }
+    return true;
+}
+

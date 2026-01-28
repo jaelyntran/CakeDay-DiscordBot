@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { SlashCommandBuilder } from 'discord.js';
 import { setBirthday } from '../db/userUtils.js';
+import { requirePermission } from '../db/userUtils.js';
 
 export default {
     data: new SlashCommandBuilder()
@@ -18,16 +19,7 @@ export default {
         ),
 
     async execute(interaction) {
-        const allowedRoles = process.env.ALLOWED_ROLES.split(',').map(id => id.trim());;
-        const memberRoleIds = interaction.member.roles.cache.map(role => role.id);
-        const hasPermission = memberRoleIds.some(id => allowedRoles.includes(id));
-
-        if (!hasPermission) {
-            return interaction.reply({
-                content: '❌ You do not have permission to run this command.',
-                ephemeral: true
-            });
-        }
+        if (!requirePermission(interaction)) return;
 
         console.log('Add birthday');
         await interaction.deferReply({ ephemeral: true });
