@@ -11,7 +11,7 @@ You can invite the hosted version of this bot directly to your server.
    
 3. Once invited, you can start using the bot's commands in any text channel.
 
-* Permissions
+Permissions
 - Users with Manage Server or Administrator permissions can add, remove, and manage birthdays.
 - All other users can view birthday information.
 
