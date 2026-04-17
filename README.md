@@ -50,6 +50,7 @@ MONGO_URI=your-mongodb-connection-string
 
 ## Notes
 - All birthday data is stored in MongoDB.
+- Each server can configure its own timezone for birthday announcements using `/settimezone`.
 - Global slash commands may take up to an hour to appear on all servers.
 - The bot only works in servers; it does not respond in DMs.
 - Each user can have only one birthday per server.
@@ -70,6 +71,10 @@ MONGO_URI=your-mongodb-connection-string
 
 /upcomingbirthday → Show the next upcoming birthday
 
+/settimezone → Set the server timezone for birthday announcements (requires Manage Server/Admin)
+
+/checktimezone → Show the server’s currently configured timezone for birthday announcements (PST/CST/EST)
+
 **Birthday Announcements:** CakeDay automatically posts birthday announcements daily in the server’s **system channel**, or if none exists, the **first available text channel** where it has permission to send messages.
 
 
@@ -78,9 +83,21 @@ MONGO_URI=your-mongodb-connection-string
 - View Channels - Required so the bot can see channels to send announcements.
 
 
+## Timezone Support
+CakeDay supports per-server timezones for accurate birthday scheduling. Each server can set its timezone using: `/settimezone`
+
+Currently, only the following timezones are supported:
+- America/Los_Angeles (Pacific Time - PST/PDT)
+- America/Chicago (Central Time - CST/CDT)
+- America/New_York (Eastern Time - EST/EDT)
+
+Birthday checks and announcements are evaluated based on the server’s configured timezone, not UTC or system time.
+
+If no timezone is set, the bot defaults to: `America/Los_Angeles`
+
+
 ## Known Issues / Limitations
 - Birthday announcements may be delayed after bot restarts or redeploys.
-- Server timezone handling is based on system default and may not reflect individual user timezones.
 - The hosted instance may be temporarily unavailable during maintenance or redeployments.
 
 
