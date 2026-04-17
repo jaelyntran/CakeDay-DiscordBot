@@ -6,7 +6,7 @@ import Server from '../models/Server.js';
 
 export default {
     data: new SlashCommandBuilder()
-        .setName('settimezone)
+        .setName('settimezone')
         .setDescription('Set the server timezone for birthday announcements')
         .addStringOption(option =>
             option.setName('zone')
