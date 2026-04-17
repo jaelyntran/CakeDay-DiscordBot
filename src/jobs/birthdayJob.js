@@ -6,29 +6,61 @@ export function startBirthdayJob(client) {
     setInterval(() => runBirthdayCheck(client), 60 * 60 * 1000);
 }
 
-async function runBirthdayCheck(client) {
-    const today = new Date();
-    const todayStr = today.toISOString().slice(0, 10);
 
+function getTodayInTimezone(timezone) {
+    const formatter = new Intl.DateTimeFormat('en-CA', {
+        timeZone: timezone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    });
+
+    return formatter.format(new Date());
+}
+
+
+function isBirthdayToday(dateString, timezone) {
+    const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: timezone,
+        month: 'numeric',
+        day: 'numeric'
+    });
+
+    const todayParts = formatter.formatToParts(new Date());
+    const birthdayParts = formatter.formatToParts(new Date(dateString));
+
+    const todayMonth = todayParts.find(p => p.type === 'month').value;
+    const todayDay = todayParts.find(p => p.type === 'day').value;
+
+    const birthMonth = birthdayParts.find(p => p.type === 'month').value;
+    const birthDay = birthdayParts.find(p => p.type === 'day').value;
+
+    return todayMonth === birthMonth && todayDay === birthDay;
+}
+
+
+async function runBirthdayCheck(client) {
     for (const guild of client.guilds.cache.values()) {
         try {
             let server = await Server.findOne({serverId: guild.id});
             if (!server) {
-                server = await Server.create({serverId: guild.id});
+                server = await Server.create({
+                                serverId: guild.id,
+                                timezone: 'America/Los_Angeles' // default
+                });
             }
-            console.log(`Running birthday job for guild: ${guild.id}`);
-            console.log(server.lastBirthdayAnnouncement);
+
+            const timezone = server.timezone || 'America/Los_Angeles';
+            const todayStr = getTodayInTimezone(timezone);
+
+            console.log(`Running birthday job for guild: ${guild.id} (${timezone})`);
+            console.log("Last run:", server.lastBirthdayAnnouncement, "Today:", todayStr);
+
             if (server.lastBirthdayAnnouncement === todayStr) continue;
 
             const users = await User.find({serverId: guild.id, birthday: { $ne: null }});
-            const birthdayUsers = users.filter(user => {
-                const birthday = new Date(user.birthday);
-                console.log("Checking user:", user.userId, "birthday:", birthday, "today:", today);
-                return (
-                    birthday.getMonth() === today.getMonth() &&
-                    birthday.getDate() === today.getDate()
-                );
-            });
+            const birthdayUsers = users.filter(user =>
+                            isBirthdayToday(user.birthday, timezone));
 
             if (birthdayUsers.length === 0) continue;
 
