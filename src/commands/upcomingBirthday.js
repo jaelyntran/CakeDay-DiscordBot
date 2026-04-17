@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { getNextBirthday } from '../db/userUtils.js';
+import Server from '../models/Server.js';
 
 export default {
     data: new SlashCommandBuilder()
@@ -11,9 +12,13 @@ export default {
         await interaction.deferReply();
 
         try {
-           const users = await getNextBirthday(interaction.guild.id);
-           if (!users) {
-            return interaction.editReply(`No information found for this server.`);
+            const server = await Server.findOne({ serverId: interaction.guild.id });
+            const timezone = server?.timezone || 'America/Los_Angeles';
+
+            const users = await getNextBirthday(interaction.guild.id, timezone);
+
+           if (!users || users.length === 0) {
+               return interaction.editReply(`No upcoming birthdays found for this server.`);
            } else {
                 let reply = `⏳ Here's the upcoming birthday(s):`;
                 for(const cur of users) {
@@ -22,7 +27,7 @@ export default {
                         const member = await interaction.guild.members.fetch(cur.user.userId);
                         userTag = member.user.tag;
                     } catch {
-                        userTag = `(Inactive) ${user.userId}`;
+                        userTag = `(Inactive) ${cur.user.userId}`;
                     }
                     const bday = new Date(cur.nextBirthday);
                     const bdayStr = `${String(bday.getMonth()+1).padStart(2,'0')}-${String(bday.getDate()).padStart(2,'0')}`;

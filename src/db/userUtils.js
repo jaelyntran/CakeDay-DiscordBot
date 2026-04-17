@@ -27,14 +27,23 @@ export async function getAllUsers(serverId) {
     return users;
 }
 
-export async function getNextBirthday(serverId) {
-    const today = new Date();
+export async function getNextBirthday(serverId, timezone) {
     const users = await User.find({serverId, birthday: { $ne: null }});
 
     if (users.length === 0) return null;
 
+    const now = new Date();
+    const formatter = new Intl.DateTimeFormat('en-CA', {
+            timeZone: timezone,
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+    const [year, month, day] = formatter.format(now).split('-').map(Number);
+    const today = new Date(year, month - 1, day);
+
     const nextBirthdays = users.map(user => {
-        const birth = user.birthday;
+        const birth = new Date(user.birthday);
         let next = new Date(today.getFullYear(), birth.getMonth(), birth.getDate());
 
         if(next < today) {
