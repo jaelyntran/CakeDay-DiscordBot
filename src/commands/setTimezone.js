@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { SlashCommandBuilder } from 'discord.js';
+import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
 import { setBirthday } from '../db/userUtils.js';
 import { requirePermission } from '../db/userUtils.js';
 import Server from '../models/Server.js';
