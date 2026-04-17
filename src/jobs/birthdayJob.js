@@ -22,19 +22,17 @@ function getTodayInTimezone(timezone) {
 function isBirthdayToday(dateString, timezone) {
     const birth = new Date(dateString);
 
-    const formatter = new Intl.DateTimeFormat('en-CA', {
+    const formatter = new Intl.DateTimeFormat('en-US', {
         timeZone: timezone,
         month: '2-digit',
         day: '2-digit'
     });
 
-    const today = formatter.format(new Date());
+    const today = formatter.format(new Date()); // "04/17"
+    const [todayMonth, todayDay] = today.split('/');
 
     const birthMonth = String(birth.getMonth() + 1).padStart(2, '0');
     const birthDay = String(birth.getDate()).padStart(2, '0');
-
-    const todayMonth = today.slice(5, 7);
-    const todayDay = today.slice(8, 10);
 
     return birthMonth === todayMonth && birthDay === todayDay;
 }
