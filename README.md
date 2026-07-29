@@ -1,8 +1,8 @@
 # CakeDay-DiscordBot
-CakeDay is a Discord bot that helps you track and celebrate birthdays in your server. It supports adding, listing, and announcing birthdays automatically. Written in JavaScript with MongoDB integration, currently hosted on Railway. 
+CakeDay is a Discord bot that helps you track and celebrate birthdays in your server. It supports adding, listing, and announcing birthdays automatically. Written in JavaScript with MongoDB integration. Bot is NOT CURRENTLY hosted on Railway. 
 
 
-## Inviting the Bot to the Server 
+## Inviting the Bot to the Server
 You can invite the hosted version of this bot directly to your server.
 
 1. Click the invite link: [Invite CakeDay](https://discord.com/oauth2/authorize?client_id=1464000903555190967)
